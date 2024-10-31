@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details - Hunt Join</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            font-size: 14px;
+            margin: 5px 0;
+            color: #333;
+        }
+        input[type="text"] {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 14px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome!</h1>
+        <p>Do not share your player ID with anyone.</p>
+        <p style="display: none" id="playerP">{{player_id}}</p>
+        <p style="display: none" id="huntP">{{hunt_id}}</p>
+
+        <form action="/current-riddle" method="POST">
+            <label style="display: none" for="player-id">Player ID:</label>
+            <input style="display: none" type="text" id="player-id" name="player_id">
+            <label style="display: none" for="hunt-id">Hunt ID:</label>
+            <input style="display: none" type="text" id="hunt-id" name="hunt_id">
+            <br>
+            <button type="submit">Submit to Current Riddle</button>
+        </form>
+    </div>
+
+    <script>
+        const playerp = document.getElementById("playerP").innerHTML;
+        localStorage.setItem("player-id", playerp);
+        const huntp = document.getElementById("huntP").innerHTML;
+        localStorage.setItem("hunt-id", huntp);
+
+        window.onload = function() {
+            const playerIdFromStorage = localStorage.getItem("player-id");
+            if (playerIdFromStorage) {
+                document.getElementById("player-id").value = playerIdFromStorage;
+            }
+            const huntIdFromStorage = localStorage.getItem("hunt-id");
+            if (huntIdFromStorage) {
+                document.getElementById("hunt-id").value = huntIdFromStorage;
+            }
+        }
+
+        function loadParagraph() {
+            const savedParagraph = localStorage.getItem("paragraphContent");
+
+            if (savedParagraph) {
+                document.getElementById("myParagraph").innerHTML = savedParagraph;
+                alert("Paragraph loaded from LocalStorage!");
+            } else {
+                alert("No paragraph content found in LocalStorage.");
+            }
+        }
+    </script>
+</body>
+</html>
