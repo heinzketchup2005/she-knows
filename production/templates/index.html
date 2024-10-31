@@ -203,7 +203,8 @@
     <div class="animation-container">
         <!-- Animation 1: Initial View -->
         <div class="circle-container" id="animation1">
-            <img src="test31.jpg" alt="Scavenger Hunt Image">
+            <img src="../static/test31.jpg" alt="Scavenger Hunt Image">
+
         </div>
         <div class="overlay-text" id="overlayText">
             <div class="word">Where's</div>
@@ -220,7 +221,8 @@
           
             <!-- Circle with buttons and image -->
             <div class="circle-container-stationary   "> <!-- Updated class here -->
-                <img src="test31.jpg" alt="Scavenger Hunt Image"> <!-- Reuse the same image -->
+                <img src="../static/test31.jpg" alt="Scavenger Hunt Image">
+                <!-- Reuse the same image -->
                 <div class="button-container">
                     <a class="btn" href="create.html">Create</a>
                     <a class="btn" href="join-game.html">Join</a>
@@ -248,7 +250,7 @@
             const playButton = document.getElementById('play-button');
             const overlayText = document.getElementById('overlayText');
             const muteButton = document.getElementById('mute-button');
-            const audio = new Audio('Level Music (2).mp3');
+            const audio = new Audio('../static/Level Music (2).mp3');
             audio.loop = true;
             audio.playbackRate = 0.5;
 
