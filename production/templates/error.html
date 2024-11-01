@@ -6,8 +6,9 @@
     <title>Error</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Georgia', serif;
+            background: url('../static/index2.jpeg') no-repeat center center fixed; /* Updated image */
+            background-size: cover;
             margin: 0;
             padding: 0;
             display: flex;
@@ -15,67 +16,98 @@
             align-items: center;
             height: 100vh;
         }
+
         .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: rgba(249, 244, 232, 0.9); /* Light parchment color with transparency */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             text-align: center;
-            width: 300px;
+            width: 400px; /* Increased width for better readability */
         }
+
         h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 10px;
+            color: #3b2415; /* Dark color for title */
+            font-size: 28px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
         }
+
         p {
             color: #666;
-            font-size: 14px;
-            margin-bottom: 15px;
+            font-size: 16px;
+            margin-bottom: 20px;
         }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+
         label {
             font-size: 14px;
             margin: 5px 0;
-            color: #333;
+            color: #3b2415; /* Dark color for labels */
         }
+
         input[type="text"] {
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #3b2415; /* Dark brown border */
+            border-radius: 8px;
             width: 100%;
-            font-size: 14px;
+            font-size: 16px; /* Increased font size */
         }
+
         button {
             padding: 10px 20px;
-            background-color: #4CAF50;
+            background-color: #3b2415; /* Dark brown button */
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px; /* Increased font size */
             transition: background-color 0.3s ease;
         }
+
         button:hover {
-            background-color: #45a049;
+            background-color: #291a10; /* Darker shade on hover */
         }
+          /* Mute Button Styling */
+      .mute-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #f5f5dc;
+        border: 2px solid #3b2415;
+        border-radius: 8px;
+        padding: 10px;
+        color: #3b2415;
+        cursor: pointer;
+        z-index: 1000;
+      }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Error</h1>
         <p>{{error}}</p>
+        <form>
+            <label for="player-id">Player ID:</label>
+            <input type="text" id="player-id" placeholder="Enter Player ID">
+            <label for="hunt-id">Hunt ID:</label>
+            <input type="text" id="hunt-id" placeholder="Enter Hunt ID">
+            <button type="button" onclick="loadParagraph()">Load Paragraph</button>
+        </form>
     </div>
+    <!-- Audio element -->
+    <audio id="background-audio" loop>
+        <source src="../static/Level Music (2).mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+      </audio>
+  
+      <!-- Mute button -->
+      <button id="mute-button" class="mute-button">🔈</button>
 
     <script>
-        const playerp = document.getElementById("playerP").innerHTML;
+        const playerp = document.getElementById("playerP") ? document.getElementById("playerP").innerHTML : '';
         localStorage.setItem("player-id", playerp);
-        const huntp = document.getElementById("huntP").innerHTML;
+        const huntp = document.getElementById("huntP") ? document.getElementById("huntP").innerHTML : '';
         localStorage.setItem("hunt-id", huntp);
 
         window.onload = function() {
@@ -100,5 +132,27 @@
             }
         }
     </script>
+     <script>
+        // JavaScript for Mute/Unmute functionality
+        const audio = document.getElementById("background-audio");
+        const muteButton = document.getElementById("mute-button");
+  
+        // Set playback speed to 0.5x
+        audio.playbackRate = 0.5;
+  
+        // Auto-play audio
+        audio.play();
+  
+        muteButton.addEventListener("click", () => {
+          if (audio.paused) {
+            audio.play();
+            muteButton.textContent = "🔈";
+          } else {
+            audio.pause();
+            muteButton.textContent = "🔇";
+          }
+        });
+      </script>
 </body>
 </html>
+
