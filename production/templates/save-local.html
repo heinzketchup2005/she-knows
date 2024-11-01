@@ -4,34 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Details - Hunt Join</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Georgia', serif; /* Adventure-themed font */
+            background: url('../static/Treasuremap.jpeg') no-repeat center center fixed; /* Background image */
+            background-size: cover; /* Ensure background covers the entire page */
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            color: #3b2b13; /* Dark brown text for readability */
         }
         .container {
-            background-color: #fff;
-            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
             text-align: center;
-            width: 300px;
+            width: 350px;
         }
         h1 {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 10px;
+            color: #6c3c14; /* Darker brown for headings */
+            font-size: 26px;
+            margin-bottom: 15px;
         }
         p {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 15px;
+            font-size: 16px;
+            margin-bottom: 20px;
         }
         form {
             display: flex;
@@ -44,26 +46,44 @@
             color: #333;
         }
         input[type="text"] {
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 2px solid #6c3c14; /* Brown border for input fields */
             border-radius: 5px;
             width: 100%;
             font-size: 14px;
         }
         button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
+            padding: 12px 24px;
+            background-color: #6c3c14; /* Treasure map color */
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
             transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #5a3310; /* Darker shade on hover */
         }
+        /* Mute Button Styling */
+    .mute-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #f5f5dc;
+      border: 2px solid #6c3c14;
+      border-radius: 8px;
+      padding: 10px;
+      color: #6c3c14;
+      cursor: pointer;
+      z-index: 1000;
+      transition: background-color 0.3s;
+    }
+
+    .mute-button:hover {
+      background-color: #e0e0d6; /* Slightly lighter on hover */
+    }
     </style>
 </head>
 <body>
@@ -78,10 +98,16 @@
             <input style="display: none" type="text" id="player-id" name="player_id">
             <label style="display: none" for="hunt-id">Hunt ID:</label>
             <input style="display: none" type="text" id="hunt-id" name="hunt_id">
-            <br>
             <button type="submit">Submit to Current Riddle</button>
         </form>
     </div>
+     <!-- Background Audio -->
+  <audio id="background-audio" loop>
+    <source src="../static/Level Music (2).mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+  <button id="mute-button" class="mute-button">🔈</button>
+
 
     <script>
         const playerp = document.getElementById("playerP").innerHTML;
@@ -99,17 +125,28 @@
                 document.getElementById("hunt-id").value = huntIdFromStorage;
             }
         }
-
-        function loadParagraph() {
-            const savedParagraph = localStorage.getItem("paragraphContent");
-
-            if (savedParagraph) {
-                document.getElementById("myParagraph").innerHTML = savedParagraph;
-                alert("Paragraph loaded from LocalStorage!");
-            } else {
-                alert("No paragraph content found in LocalStorage.");
-            }
-        }
     </script>
+      <script>
+        // JavaScript for Mute/Unmute functionality
+        const audio = document.getElementById("background-audio");
+        const muteButton = document.getElementById("mute-button");
+    
+        // Set playback speed to 0.5x
+        audio.playbackRate = 0.5;
+    
+        // Auto-play audio
+        audio.play();
+    
+        muteButton.addEventListener("click", () => {
+          if (audio.paused) {
+            audio.play();
+            muteButton.textContent = "🔈"; // Show unmute icon
+          } else {
+            audio.pause();
+            muteButton.textContent = "🔇"; // Show mute icon
+          }
+        });
+      </script>
+    
 </body>
 </html>
