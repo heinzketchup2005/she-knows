@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 import random
 import time
@@ -21,7 +21,6 @@ def create_game():
 @app.route("/join-game", methods=["GET"])
 def join_game():
     return render_template("join-game.html")
-
 
 @app.route("/start-hunt", methods=['POST'])
 def start_hunt():
@@ -76,26 +75,27 @@ def join_hunt():
             {"_id": hunt_id},
             {"$push": {"players": player_id}}
         )
-        return render_template("save-local.html", player_id=player_id, hunt_id=hunt_id)
+        # Redirect to the current riddle for the player immediately after joining
+        return redirect(url_for("current_riddle", player_id=player_id, hunt_id=hunt_id))
     else:
         return render_template("error.html", error="This hunt does not exist.")
 
-@app.route("/current-riddle", methods=["POST"])
-def current_riddle():
-    player_id = int(request.form["player_id"])
-    hunt_id = int(request.form["hunt_id"])
-
+@app.route("/current-riddle/<int:player_id>/<int:hunt_id>", methods=["GET"])
+def current_riddle(player_id, hunt_id):
     player = players_collection.find_one({"_id": player_id})
     hunt = hunts_collection.find_one({"_id": hunt_id})
 
     if player and hunt:
         current_object = player['current_object']
-        next_hint = hunt['objects'][current_object]['riddle']
-        next_room = hunt['objects'][current_object]['room']
-        return render_template(
-            "player-dashboard.html", riddle=next_hint, room=next_room,
-            obj=current_object, player_id=player_id, hunt_id=hunt_id
-        )
+        if current_object < len(hunt['objects']):
+            next_hint = hunt['objects'][current_object]['riddle']
+            next_room = hunt['objects'][current_object]['room']
+            return render_template(
+                "player-dashboard.html", riddle=next_hint, room=next_room,
+                obj=current_object, player_id=player_id, hunt_id=hunt_id
+            )
+        else:
+            return redirect(url_for("finish_game", player_id=player_id, hunt_id=hunt_id))
     else:
         return render_template("error.html", error="Player or hunt not found.")
 
@@ -125,37 +125,37 @@ def submit_item():
         player = players_collection.find_one({"_id": player_id})  # Re-fetch updated player data
 
         if player['current_object'] < len(hunt['objects']):
-            return redirect(f"/current-riddle/{player_id}/{hunt_id}")
+            return redirect(url_for("current_riddle", player_id=player_id, hunt_id=hunt_id))
         else:
             players_collection.update_one(
                 {"_id": player_id},
                 {"$set": {"finished": True}}
             )
-            return redirect(f"/finish/{player_id}/{hunt_id}")
+            return redirect(url_for("finish_game", player_id=player_id, hunt_id=hunt_id))
     else:
         return render_template("error.html", error="Incorrect code.")
 
-@app.route("/finish/<player>/<hunt>", methods=["GET"])
-def finish_game(player, hunt):
-    player_id = int(player)
-    hunt_id = int(hunt)
-
+@app.route("/finish/<int:player_id>/<int:hunt_id>", methods=["GET"])
+def finish_game(player_id, hunt_id):
     player = players_collection.find_one({"_id": player_id})
     if player and player['finished']:
         player_time = player['current_time']
         rank = 1
 
+        # Calculate the player's rank
         for other_player in players_collection.find({"hunt_id": hunt_id, "finished": True}):
             if other_player['current_time'] < player_time:
                 rank += 1
 
+        # Calculate the time taken by the player
         total_seconds = round(player_time - player['start_time'])
         hours, remainder = divmod(total_seconds, 3600)
         minutes, seconds = divmod(remainder, 60)
 
+        # Pass `hunt_id` to the template so it can be used in the leaderboard link
         return render_template(
             "finish.html", name=player['name'], rk=rank,
-            hrs=hours, mins=minutes, secs=seconds
+            hrs=hours, mins=minutes, secs=seconds, hunt_id=hunt_id
         )
     else:
         return render_template("error.html", error="Unfinished hunt or player not found.")
