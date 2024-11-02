@@ -72,6 +72,30 @@
         .mute-button:hover {
             background-color: #e0e0d6; /* Slightly lighter on hover */
         }
+        /* Leaderboard Button Styling */
+    .leaderboard-button {
+        margin-top: 20px;
+        background-color: #4b2e1a;
+        color: #f8f9fa;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .leaderboard-button:hover {
+        background-color: #3b2415;
+        transform: translateY(-2px); /* Lift effect on hover */
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+    }
+
+    .leaderboard-button:active {
+        transform: translateY(0); /* Return to original position when clicked */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Reset shadow on click */
+      }
     </style>
   </head>
   <body class="vh-100 d-flex flex-column">
@@ -100,6 +124,8 @@
         <div>
             <h1 class="text-center">Congratulations {{ name }} on finishing the Hunt!</h1>
             <h3 class="text-center fst-italic">You placed rank {{ rk }} with a time of {{ hrs }} hours, {{ mins }} minutes, {{ secs }} seconds</h3>
+            <a href="/leaderboard/{{ hunt_id }}" class="btn leaderboard-button">View Leaderboard</a>
+
         </div>
     </main>
     <audio id="background-audio" loop>
