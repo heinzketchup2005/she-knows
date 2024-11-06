@@ -6,7 +6,7 @@
   <title>Join Game</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <style>
-    /* Background image */
+   
     body {
       background: url('../static/map1.jpeg') no-repeat center center fixed;
       background-size: cover;
@@ -17,69 +17,69 @@
     }
 
    
-       /* Navbar styling */
+       
        .navbar {
-        background: linear-gradient(135deg, #4b2e1a, #3b2415, #291a10); /* Brown color gradient */
+        background: linear-gradient(135deg, #4b2e1a, #3b2415, #291a10); 
       }
 
       .navbar-brand {
-        color: #f8f9fa !important; /* Light color for brand */
+        color: #f8f9fa !important; 
       }
 
       .navbar-nav .nav-link {
-        color: #f8f9fa !important; /* Light color for navbar links */
+        color: #f8f9fa !important; 
       }
 
       .navbar-nav .nav-link:hover {
-        text-decoration: underline; /* Underline effect on hover */
+        text-decoration: underline; 
       }
    
 
-    /* Main content container */
+   
     .content-container {
       flex: 1;
       display: flex;
       align-items: center;
-      justify-content: center; /* Center the content */
+      justify-content: center; 
       padding: 2rem;
     }
 
-    /* Form container styling */
+  
     .form-container {
-      width: 90%; /* Use more width */
-      max-width: 800px; /* Limit max width */
-      background: rgba(249, 244, 232, 0.9); /* Light parchment color with transparency */
+      width: 90%; 
+      max-width: 800px; 
+      background: rgba(249, 244, 232, 0.9); 
       padding: 40px;
-      border-radius: 20px; /* Rounded corners */
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* More pronounced shadow */
+      border-radius: 20px; 
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); 
       position: relative;
       font-family: 'Georgia', serif;
       color: #3b2415;
       text-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
     }
 
-    /* Larger input styling */
+    
     .form-control {
-      font-size: 1.5rem; /* Larger font */
-      padding: 12px; /* Increase padding */
-      height: 60px; /* Larger height */
-      margin-bottom: 20px; /* Space between inputs */
+      font-size: 1.5rem; 
+      padding: 12px; 
+      height: 60px; 
+      margin-bottom: 20px; 
     }
 
-    /* Button styling */
+    
     .btn-primary {
-      background-color: #3b2415; /* Dark brown for button */
+      background-color: #3b2415; 
       border: none;
-      padding: 12px 20px; /* Increase padding for button */
-      font-size: 1.5rem; /* Larger font size */
-      border-radius: 8px; /* Rounded corners */
-      transition: background-color 0.3s; /* Smooth transition */
+      padding: 12px 20px; 
+      font-size: 1.5rem; 
+      border-radius: 8px; 
+      transition: background-color 0.3s; 
     }
 
     .btn-primary:hover {
-      background-color: #291a10; /* Darker shade on hover */
+      background-color: #291a10; 
     }
-     /* Mute Button Styling */
+     
      .mute-button {
             position: fixed;
             bottom: 20px;
@@ -95,12 +95,12 @@
         }
 
         .mute-button:hover {
-            background-color: #e0e0d6; /* Slightly lighter on hover */
+            background-color: #e0e0d6; 
         }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
+ 
   <nav class="navbar navbar-expand-sm navbar-beige w-100">
     <div class="container-fluid">
       <a class="navbar-brand navbar-brand-box" href="/">Where's Blue Ivy?</a>
@@ -120,7 +120,7 @@
     </div>
   </nav>
 
-  <!-- Content Container with Side Form -->
+  
   <div class="content-container">
     <div class="form-container">
       <h5>Join mnnit-public hunt at hunt id 8780</h5>
@@ -143,18 +143,18 @@
     <source src="../static/Level Music (2).mp3" type="audio/mp3">
     Your browser does not support the audio element.
 </audio>
-<!-- Mute button -->
+
 <button id="mute-button" class="mute-button">🔈</button>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script>
-    // JavaScript for Mute/Unmute functionality
+   
     const audio = document.getElementById("background-audio");
     const muteButton = document.getElementById("mute-button");
 
-    // Set playback speed to 0.5x
+  
     audio.playbackRate = 0.5;
 
-    // Auto-play audio
+   
     audio.play();
 
     muteButton.addEventListener("click", () => {
