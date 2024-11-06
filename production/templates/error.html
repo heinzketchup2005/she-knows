@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Georgia', serif;
-            background: url('../static/index2.jpeg') no-repeat center center fixed; /* Updated image */
+            background: url('../static/index2.jpeg') no-repeat center center fixed; 
             background-size: cover;
             margin: 0;
             padding: 0;
@@ -18,16 +18,16 @@
         }
 
         .container {
-            background-color: rgba(249, 244, 232, 0.9); /* Light parchment color with transparency */
+            background-color: rgba(249, 244, 232, 0.9); 
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             text-align: center;
-            width: 400px; /* Increased width for better readability */
+            width: 400px; 
         }
 
         h1 {
-            color: #3b2415; /* Dark color for title */
+            color: #3b2415; 
             font-size: 28px;
             margin-bottom: 15px;
             text-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
@@ -42,33 +42,33 @@
         label {
             font-size: 14px;
             margin: 5px 0;
-            color: #3b2415; /* Dark color for labels */
+            color: #3b2415; 
         }
 
         input[type="text"] {
             padding: 10px;
             margin-bottom: 15px;
-            border: 2px solid #3b2415; /* Dark brown border */
+            border: 2px solid #3b2415; 
             border-radius: 8px;
             width: 100%;
-            font-size: 16px; /* Increased font size */
+            font-size: 16px; 
         }
 
         button {
             padding: 10px 20px;
-            background-color: #3b2415; /* Dark brown button */
+            background-color: #3b2415; 
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 16px; /* Increased font size */
+            font-size: 16px; 
             transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #291a10; /* Darker shade on hover */
+            background-color: #291a10; 
         }
-          /* Mute Button Styling */
+     
       .mute-button {
         position: fixed;
         bottom: 20px;
@@ -95,13 +95,13 @@
             <button type="button" onclick="loadParagraph()">Load Paragraph</button>
         </form>
     </div>
-    <!-- Audio element -->
+  
     <audio id="background-audio" loop>
         <source src="../static/Level Music (2).mp3" type="audio/mp3">
         Your browser does not support the audio element.
       </audio>
   
-      <!-- Mute button -->
+  
       <button id="mute-button" class="mute-button">🔈</button>
 
     <script>
@@ -133,14 +133,14 @@
         }
     </script>
      <script>
-        // JavaScript for Mute/Unmute functionality
+        
         const audio = document.getElementById("background-audio");
         const muteButton = document.getElementById("mute-button");
   
-        // Set playback speed to 0.5x
+  
         audio.playbackRate = 0.5;
   
-        // Auto-play audio
+  
         audio.play();
   
         muteButton.addEventListener("click", () => {
