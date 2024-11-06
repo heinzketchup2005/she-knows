@@ -13,28 +13,28 @@
   flex-direction: column;
 }
 
-       /* Navbar styling */
+     
        .navbar {
         background: linear-gradient(135deg, #4b2e1a, #3b2415, #291a10); /* Brown color gradient */
       }
 
       .navbar-brand {
-        color: #f8f9fa !important; /* Light color for brand */
+        color: #f8f9fa !important; 
       }
 
       .navbar-nav .nav-link {
-        color: #f8f9fa !important; /* Light color for navbar links */
+        color: #f8f9fa !important; 
       }
 
       .navbar-nav .nav-link:hover {
-        text-decoration: underline; /* Underline effect on hover */
+        text-decoration: underline; 
       }
       .form-container {
-    background-color: rgba(245, 245, 220, 0.9); /* Beige with slight transparency */
-    color: #3b2415; /* Dark brown text for readability */
+    background-color: rgba(245, 245, 220, 0.9); 
+    color: #3b2415; 
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0px 4px 12px rgba(36, 127, 129, 0.3); /* Slight shadow for depth */
+    box-shadow: 0px 4px 12px rgba(36, 127, 129, 0.3); 
     width: 90%;
     max-width: 800px;
     position: relative;
@@ -42,7 +42,7 @@
   }
 
   .form-container h1, .form-container label, .form-container .form-text {
-    color: #3b2415; /* Consistent dark brown color for headings and text */
+    color: #3b2415; 
   }
       /* Custom styles for the button */
       .btn-create-game {
@@ -57,7 +57,7 @@
         color: white;
       }
 
-      /* Mute Button Styling */
+      
       .mute-button {
         position: fixed;
         bottom: 20px;
@@ -74,16 +74,16 @@
     </style>
   </head>
   <body>
-    <!-- Audio element -->
+
     <audio id="background-audio" loop>
       <source src="../static/Level Music (2).mp3" type="audio/mp3">
       Your browser does not support the audio element.
     </audio>
 
-    <!-- Mute button -->
+    
     <button id="mute-button" class="mute-button">🔈</button>
 
-    <!-- Navbar -->
+   
     <nav class="navbar navbar-expand-sm navbar-beige" aria-label="Third navbar example">
       <div class="container-fluid">
         <a class="navbar-brand navbar-brand-box" href="/">Where's Blue Ivy?</a> <!-- Box styling applied here -->
@@ -104,11 +104,11 @@
       </div>
     </nav>
 
-    <!-- Container for the form -->
+   
     <div class="p-4 d-flex justify-content-center align-items-center">
       <div class="game-background"></div>
 
-      <!-- Form -->
+  
       <div class="form-container">
         <h1>Create a Game</h1>
         <form action="/start-hunt" method="POST">
@@ -123,7 +123,7 @@
             <input type="text" name="org" class="form-control" id="organizerName">
           </div>
 
-          <!-- Clues -->
+         
           <div class="mb-3">
             <h5>Clues</h5>
             <div class="row">
@@ -179,14 +179,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-      // JavaScript for Mute/Unmute functionality
+      
       const audio = document.getElementById("background-audio");
       const muteButton = document.getElementById("mute-button");
 
-      // Set playback speed to 0.5x
+     
       audio.playbackRate = 0.5;
 
-      // Auto-play audio
+      
       audio.play();
 
       muteButton.addEventListener("click", () => {
