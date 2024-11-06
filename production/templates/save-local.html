@@ -7,19 +7,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Georgia', serif; /* Adventure-themed font */
-            background: url('../static/Treasuremap.jpeg') no-repeat center center fixed; /* Background image */
-            background-size: cover; /* Ensure background covers the entire page */
+            font-family: 'Georgia', serif; 
+            background: url('../static/Treasuremap.jpeg') no-repeat center center fixed; 
+            background-size: cover; 
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            color: #3b2b13; /* Dark brown text for readability */
+            color: #3b2b13; 
         }
         .container {
-            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            background-color: rgba(255, 255, 255, 0.9); 
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
@@ -27,7 +27,7 @@
             width: 350px;
         }
         h1 {
-            color: #6c3c14; /* Darker brown for headings */
+            color: #6c3c14; 
             font-size: 26px;
             margin-bottom: 15px;
         }
@@ -48,14 +48,14 @@
         input[type="text"] {
             padding: 10px;
             margin-bottom: 15px;
-            border: 2px solid #6c3c14; /* Brown border for input fields */
+            border: 2px solid #6c3c14; 
             border-radius: 5px;
             width: 100%;
             font-size: 14px;
         }
         button {
             padding: 12px 24px;
-            background-color: #6c3c14; /* Treasure map color */
+            background-color: #6c3c14; 
             color: white;
             border: none;
             border-radius: 5px;
@@ -64,9 +64,9 @@
             transition: background-color 0.3s ease;
         }
         button:hover {
-            background-color: #5a3310; /* Darker shade on hover */
+            background-color: #5a3310; 
         }
-        /* Mute Button Styling */
+      
     .mute-button {
       position: fixed;
       bottom: 20px;
@@ -82,7 +82,7 @@
     }
 
     .mute-button:hover {
-      background-color: #e0e0d6; /* Slightly lighter on hover */
+      background-color: #e0e0d6; 
     }
     </style>
 </head>
@@ -101,7 +101,7 @@
             <button type="submit">Submit to Current Riddle</button>
         </form>
     </div>
-     <!-- Background Audio -->
+    
   <audio id="background-audio" loop>
     <source src="../static/Level Music (2).mp3" type="audio/mp3">
     Your browser does not support the audio element.
@@ -127,23 +127,23 @@
         }
     </script>
       <script>
-        // JavaScript for Mute/Unmute functionality
+        
         const audio = document.getElementById("background-audio");
         const muteButton = document.getElementById("mute-button");
     
-        // Set playback speed to 0.5x
+  
         audio.playbackRate = 0.5;
     
-        // Auto-play audio
+ 
         audio.play();
     
         muteButton.addEventListener("click", () => {
           if (audio.paused) {
             audio.play();
-            muteButton.textContent = "🔈"; // Show unmute icon
+            muteButton.textContent = "🔈"; 
           } else {
             audio.pause();
-            muteButton.textContent = "🔇"; // Show mute icon
+            muteButton.textContent = "🔇"; 
           }
         });
       </script>
