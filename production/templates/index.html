@@ -5,7 +5,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Dark gradient background with background image */
+       
         body {
             background: linear-gradient(135deg, rgba(75, 46, 26, 0.7), rgba(59, 36, 21, 0.7), rgba(41, 26, 16, 0.7)), url('../static/map2.jpeg');
             background-size: cover;
@@ -19,14 +19,14 @@
             overflow: hidden;
         }
 
-        /* Animation Container */
+        
         .animation-container {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Circle container for Animation 1 */
+      
         .circle-container {
             position: relative;
             width: 700px;
@@ -40,7 +40,7 @@
             transition: width 1s ease, height 1s ease;
         }
 
-        /* Overlay text for animation 1 */
+   
         .overlay-text {
             position: absolute;
             color: white;
@@ -50,23 +50,23 @@
             transform: translateY(-50%);
         }
 
-        /* Updated styles for each word */
+       
         .word {
             opacity: 0;
             animation: fadeIn 1s forwards;
-            font-size: 10vw; /* Responsive font size */
-            font-weight: bold; /* Make the font bold */
+            font-size: 10vw; 
+            font-weight: bold;
             text-shadow: 
                 -1px -1px 0 #000,  
                 1px -1px 0 #000,
                 -1px 1px 0 #000,
-                1px 1px 0 #000; /* Create a black border effect */
+                1px 1px 0 #000; 
         }
         .word:nth-child(1) { animation-delay: 1s; }
         .word:nth-child(2) { animation-delay: 2s; }
         .word:nth-child(3) { animation-delay: 3s; }
 
-        /* Stationary Circle Container for Animation 2 */
+       
         .circle-container-stationary {
             position: relative;
             width: 700px;
@@ -79,7 +79,7 @@
             transition: width 1s ease, height 1s ease;
         }
 
-        /* Circular image inside container */
+       
         .circle-container img {
             width: 100%;
             height: 100%;
@@ -87,25 +87,25 @@
             border-radius: 50%;
         }
 
-        /* Text on top for Animation 2 */
+       
         .small-text {
             position: absolute;
-            top: 20px; /* Position at the top */
-            font-size: 4vw; /* Responsive font size */
+            top: 20px; 
+            font-size: 4vw; 
             font-family: 'Cinzel', serif;
             text-align: center;
             margin-bottom: 20px;
-            z-index: 10; /* Ensure it is above the circle */
-            color: white; /* Text color */
-            font-weight: bold; /* Make the font bold */
+            z-index: 10; 
+            color: white; 
+            font-weight: bold; 
             text-shadow: 
                 -1px -1px 0 #000,  
                 1px -1px 0 #000,
                 -1px 1px 0 #000,
-                1px 1px 0 #000; /* Create a black border effect */
+                1px 1px 0 #000; 
         }
 
-        /* Animation 2 Content */
+       
         .second-screen {
             position: relative;
             display: flex;
@@ -117,49 +117,49 @@
             transition: opacity 1s, visibility 1s;
         }
 
-        /* Buttons inside the circle */
+        
         .button-container {
-            position: absolute; /* Position absolute to the circle */
-            top: 50%; /* Center vertically */
-            left: 50%; /* Center horizontally */
-            transform: translate(-50%, -50%); /* Offset to truly center */
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
             display: flex;
-            flex-direction: column; /* Stack buttons vertically */
-            gap: 20px; /* Space between buttons */
-            z-index: 5; /* Ensure buttons are above the circle */
+            flex-direction: column; 
+            gap: 20px; 
+            z-index: 5; 
         }
 
         .button-container a {
-            padding: 15px 25px; /* Adjust padding for a more balanced look */
+            padding: 15px 25px; 
             font-size: 1.5rem;
             text-decoration: none;
-            color: #fff; /* Change text color to white */
-            background-color: #090a0a; /* Change background color */
-            border-radius: 10px; /* Use rounded corners for a softer look */
-            box-shadow: 0 4px 10px rgba(36, 127, 129, 0.3); /* Add a subtle shadow */
-            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Add shadow transition */
+            color: #fff; 
+            background-color: #090a0a;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(36, 127, 129, 0.3); 
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; 
         }
 
-        /* Button hover effect */
+       
         .button-container a:hover {
-            background-color: #21887a; /* Darker shade of green on hover */
-            transform: translateY(-2px); /* Lift effect on hover */
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); /* Increase shadow on hover */
+            background-color: #21887a; 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4); 
         }
 
-        /* Fade In Animation */
+        
         @keyframes fadeIn {
             0% { opacity: 0; }
             100% { opacity: 1; }
         }
 
-        /* Rotate Animation */
+    
         @keyframes rotate {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-       /* Mute Button Styling */
+       
        .mute-button {
         position: fixed;
         bottom: 20px;
@@ -175,16 +175,16 @@
     </style>
 </head>
 <body>
-      <!-- Audio element -->
+   
       <audio id="background-audio" loop>
         <source src="../static/Level Music (2).mp3" type="audio/mp3">
         Your browser does not support the audio element.
       </audio>
   
-      <!-- Mute button -->
+      
       <button id="mute-button" class="mute-button">🔈</button>
     <div class="animation-container">
-        <!-- Animation 1: Initial View -->
+        
         <div class="circle-container" id="animation1">
             <img src="../static/test31.jpg" alt="Scavenger Hunt Image">
         </div>
@@ -195,12 +195,12 @@
         </div>
         <button id="play-button" class="btn btn-outline-light mt-3">Play</button>
 
-        <!-- Animation 2: Second Screen -->
+        
         <div class="second-screen" id="animation2">
-            <!-- Text on top -->
+           
             <div class="small-text">Where's Blue Ivy?</div>
             <br/>
-            <!-- Circle with buttons and image -->
+           
             <div class="circle-container-stationary">
                 <img src="../static/test31.jpg" alt="Scavenger Hunt Image">
                 <div class="button-container">
@@ -211,46 +211,43 @@
         </div>
     </div>
 
-    <!-- Mute Button in Bottom-Left -->
+    
     <div class="mute-button-container">
         <button id="mute-button" class="btn btn-outline-light">Unmute</button>
     </div>
 
-    <!-- JavaScript -->
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Prevent scroll restoration
+           
             window.history.scrollRestoration = 'manual';
             
-            // Scroll to top on load
             window.scrollTo(0, 0);
             
             const animation1 = document.getElementById('animation1');
             const animation2 = document.getElementById('animation2');
             const playButton = document.getElementById('play-button');
 
-            // Show Animation 2 when Play button is clicked
+          
             playButton.addEventListener('click', () => {
-                overlayText.style.display = 'none'; // Hide overlay text
-                animation1.style.display = 'none'; // Hide the first animation
-                animation2.style.opacity = 1; // Fade in Animation 2
-                animation2.style.visibility = 'visible'; // Make it visible
+                overlayText.style.display = 'none'; 
+                animation1.style.display = 'none'; 
+                animation2.style.opacity = 1; 
+                animation2.style.visibility = 'visible'; 
             });
 
-            // Ensure Animation 2 is hidden on initial load
-            animation2.style.opacity = 0; // Start with Animation 2 hidden
-            animation2.style.visibility = 'hidden'; // Initially not visible
+           
+            animation2.style.opacity = 0; 
+            animation2.style.visibility = 'hidden'; 
         });
     </script>
      <script>
-        // JavaScript for Mute/Unmute functionality
+       
         const audio = document.getElementById("background-audio");
         const muteButton = document.getElementById("mute-button");
   
-        // Set playback speed to 0.5x
         audio.playbackRate = 0.5;
   
-        // Auto-play audio
         audio.play();
   
         muteButton.addEventListener("click", () => {
