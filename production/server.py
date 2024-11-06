@@ -4,8 +4,8 @@ from flask import session
 from pymongo import MongoClient
 import random
 import time
+client = MongoClient("mongodb+srv://scavenger_user:hunter123456@cluster01.ct2bj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01")
 
-client = MongoClient("mongodb+srv://scavenger_user:hunter12345@cluster0.kx3cu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["scavenger_hunt"]
 hunts_collection = db["hunts"]
 players_collection = db["players"]
