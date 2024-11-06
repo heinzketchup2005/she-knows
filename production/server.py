@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask import session
 from pymongo import MongoClient
 import random
 import time
@@ -8,7 +10,9 @@ db = client["scavenger_hunt"]
 hunts_collection = db["hunts"]
 players_collection = db["players"]
 
+
 app = Flask(__name__)
+app.secret_key = 'Shambhav2005'  
 
 @app.route("/")
 def home():
@@ -21,7 +25,6 @@ def create_game():
 @app.route("/join-game", methods=["GET"])
 def join_game():
     return render_template("join-game.html")
-
 
 @app.route("/start-hunt", methods=['POST'])
 def start_hunt():
@@ -52,52 +55,62 @@ def start_hunt():
     hunts_collection.insert_one(hunt_data)
 
     return render_template("hunt-reveal.html", hunt_name=hunt_name, hunt_id=hunt_id)
-
 @app.route("/join-hunt", methods=["POST"])
 def join_hunt():
     hunt_id = int(request.form["idd"])
     name = request.form["name"]
+    password = request.form["password"]  
 
     hunt = hunts_collection.find_one({"_id": hunt_id})
-    if hunt:
+    if not hunt:
+        return render_template("error.html", error="This hunt does not exist.")
+
+    player = players_collection.find_one({"hunt_id": hunt_id, "name": name})
+    if player:
+        if check_password_hash(player['password'], password):
+            session['player_id'] = player['_id']  
+            session['hunt_id'] = hunt_id
+            if player['finished']:
+                return redirect(url_for("finish_game", player_id=player['_id'], hunt_id=hunt_id))
+            return redirect(url_for("current_riddle", player_id=player['_id'], hunt_id=hunt_id))
+        else:
+            return render_template("error.html", error="Incorrect password.")
+    else:
         player_id = random.randint(1000, 9999)
-        player = {
+        player_data = {
             "_id": player_id,
             'name': name,
             'hunt_id': hunt_id,
             'current_object': 0,
             'start_time': time.time(),
             'current_time': time.time(),
-            'finished': False
+            'finished': False,
+            'password': generate_password_hash(password)
         }
-        players_collection.insert_one(player)
+        players_collection.insert_one(player_data)
+        session['player_id'] = player_id
+        session['hunt_id'] = hunt_id
+        return redirect(url_for("current_riddle", player_id=player_id, hunt_id=hunt_id))
 
-        hunts_collection.update_one(
-            {"_id": hunt_id},
-            {"$push": {"players": player_id}}
-        )
-        return render_template("save-local.html", player_id=player_id, hunt_id=hunt_id)
-    else:
-        return render_template("error.html", error="This hunt does not exist.")
-
-@app.route("/current-riddle", methods=["POST"])
-def current_riddle():
-    player_id = int(request.form["player_id"])
-    hunt_id = int(request.form["hunt_id"])
+@app.route("/current-riddle/<int:player_id>/<int:hunt_id>", methods=["GET"])
+def current_riddle(player_id, hunt_id):
+    if 'player_id' not in session or session['player_id'] != player_id:
+        return redirect(url_for("join_game"))
 
     player = players_collection.find_one({"_id": player_id})
     hunt = hunts_collection.find_one({"_id": hunt_id})
 
     if player and hunt:
         current_object = player['current_object']
-        next_hint = hunt['objects'][current_object]['riddle']
-        next_room = hunt['objects'][current_object]['room']
-        return render_template(
-            "player-dashboard.html", riddle=next_hint, room=next_room,
-            obj=current_object, player_id=player_id, hunt_id=hunt_id
-        )
+        if current_object < len(hunt['objects']):
+            next_hint = hunt['objects'][current_object]['riddle']
+            next_room = hunt['objects'][current_object]['room']
+            return render_template("player-dashboard.html", riddle=next_hint, room=next_room, obj=current_object, player_id=player_id, hunt_id=hunt_id)
+        else:
+            return redirect(url_for("finish_game", player_id=player_id, hunt_id=hunt_id))
     else:
         return render_template("error.html", error="Player or hunt not found.")
+
 
 @app.route("/submit-item", methods=['POST'])
 def submit_item():
@@ -122,24 +135,21 @@ def submit_item():
             {"_id": player_id},
             {"$inc": {"current_object": 1}, "$set": {"current_time": time.time()}}
         )
-        player = players_collection.find_one({"_id": player_id})  # Re-fetch updated player data
+        player = players_collection.find_one({"_id": player_id}) 
 
         if player['current_object'] < len(hunt['objects']):
-            return redirect(f"/current-riddle/{player_id}/{hunt_id}")
+            return redirect(url_for("current_riddle", player_id=player_id, hunt_id=hunt_id))
         else:
             players_collection.update_one(
                 {"_id": player_id},
                 {"$set": {"finished": True}}
             )
-            return redirect(f"/finish/{player_id}/{hunt_id}")
+            return redirect(url_for("finish_game", player_id=player_id, hunt_id=hunt_id))
     else:
         return render_template("error.html", error="Incorrect code.")
 
-@app.route("/finish/<player>/<hunt>", methods=["GET"])
-def finish_game(player, hunt):
-    player_id = int(player)
-    hunt_id = int(hunt)
-
+@app.route("/finish/<int:player_id>/<int:hunt_id>", methods=["GET"])
+def finish_game(player_id, hunt_id):
     player = players_collection.find_one({"_id": player_id})
     if player and player['finished']:
         player_time = player['current_time']
@@ -155,7 +165,7 @@ def finish_game(player, hunt):
 
         return render_template(
             "finish.html", name=player['name'], rk=rank,
-            hrs=hours, mins=minutes, secs=seconds
+            hrs=hours, mins=minutes, secs=seconds, hunt_id=hunt_id
         )
     else:
         return render_template("error.html", error="Unfinished hunt or player not found.")

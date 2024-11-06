@@ -13,21 +13,21 @@
         margin: 0;
       }
 
-      /* Navbar styling */
+      
       .navbar {
         background: linear-gradient(135deg, #4b2e1a, #3b2415, #291a10); /* Brown color gradient */
       }
 
       .navbar-brand {
-        color: #f8f9fa !important; /* Light color for brand */
+        color: #f8f9fa !important; 
       }
 
       .navbar-nav .nav-link {
-        color: #f8f9fa !important; /* Light color for navbar links */
+        color: #f8f9fa !important; 
       }
 
       .navbar-nav .nav-link:hover {
-        text-decoration: underline; /* Underline effect on hover */
+        text-decoration: underline; 
       }
 
       main {
@@ -35,26 +35,26 @@
         display: flex; 
         justify-content: center; 
         align-items: center;
-        text-align: center; /* Center text in main */
-        color: #3b2415; /* Dark color for text */
+        text-align: center; 
+        color: #3b2415; 
       }
 
       h1, h3 {
-        background-color: rgba(255, 255, 255, 0.9); /* Light background for text */
-        padding: 20px; /* Padding around text */
-        border-radius: 10px; /* Rounded corners */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+        background-color: rgba(255, 255, 255, 0.9); 
+        padding: 20px; 
+        border-radius: 10px; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
       }
 
       h1 {
-        font-size: 2.5rem; /* Title font size */
-        margin-bottom: 10px; /* Space below title */
+        font-size: 2.5rem; 
+        margin-bottom: 10px; 
       }
 
       h3 {
-        font-size: 1.5rem; /* Subtitle font size */
+        font-size: 1.5rem; 
       }
-         /* Mute Button Styling */
+         
          .mute-button {
             position: fixed;
             bottom: 20px;
@@ -70,12 +70,36 @@
         }
 
         .mute-button:hover {
-            background-color: #e0e0d6; /* Slightly lighter on hover */
+            background-color: #e0e0d6; 
         }
+      
+    .leaderboard-button {
+        margin-top: 20px;
+        background-color: #4b2e1a;
+        color: #f8f9fa;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .leaderboard-button:hover {
+        background-color: #3b2415;
+        transform: translateY(-2px); 
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); 
+    }
+
+    .leaderboard-button:active {
+        transform: translateY(0); 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+      }
     </style>
   </head>
   <body class="vh-100 d-flex flex-column">
-    <!-- Navbar-->
+   
     <nav class="navbar navbar-expand-sm" aria-label="Third navbar example">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Where's Blue Ivy?</a>
@@ -100,6 +124,8 @@
         <div>
             <h1 class="text-center">Congratulations {{ name }} on finishing the Hunt!</h1>
             <h3 class="text-center fst-italic">You placed rank {{ rk }} with a time of {{ hrs }} hours, {{ mins }} minutes, {{ secs }} seconds</h3>
+            <a href="/leaderboard/{{ hunt_id }}" class="btn leaderboard-button">View Leaderboard</a>
+
         </div>
     </main>
     <audio id="background-audio" loop>
@@ -109,14 +135,12 @@
   <button id="mute-button" class="mute-button">🔈</button>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
-      // JavaScript for Mute/Unmute functionality
+     
       const audio = document.getElementById("background-audio");
       const muteButton = document.getElementById("mute-button");
 
-      // Set playback speed to 0.5x
       audio.playbackRate = 0.5;
 
-      // Auto-play audio
       audio.play();
 
       muteButton.addEventListener("click", () => {
