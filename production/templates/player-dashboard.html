@@ -12,65 +12,40 @@
       font-family: 'Georgia', serif; 
       background-image: url('../static/map1.jpeg');
     }
-
- 
     .navbar {
       background-color: #6c3c14; 
       background-size: cover; 
       background-position: center;
     }
-
     .navbar-brand, .nav-link {
-      color: #ffffff; 
+      color: #ffffff;
       font-weight: bold; 
     }
-
-    .nav-link-join {
-      color: #ffffff !important; 
-    }
-
     .nav-link:hover {
       color: #fbfbfb; 
     }
-
     h2 {
       font-weight: bold;
       color: #6c3c14; 
     }
-
     p {
       font-size: 1.2rem; 
     }
-
     .btn-primary {
-      background-color: #6c3c14; 
+      background-color: #6c3c14;
       border: none;
+      transition: background-color 0.3s ease;
     }
-
     .btn-primary:hover {
       background-color: #5a3310; 
     }
-
     .form-control {
       border: 2px solid #6c3c14; 
     }
-
     .form-control:focus {
       box-shadow: none; 
       border-color: #5a3310; 
     }
-
-    iframe {
-      border: 2px solid #6c3c14; 
-    }
-
-    .d-flex img {
-      max-width: 100%; 
-      height: auto;
-      border-radius: 10px; 
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-    }
-
     .riddle-container {
       background-color: #fef5e7; 
       border: 2px solid #6c3c14; 
@@ -78,103 +53,90 @@
       padding: 20px; 
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     }
-
-    
     .mute-button {
       position: fixed;
       bottom: 20px;
       right: 20px;
       background-color: #f5f5dc;
       border: 2px solid #6c3c14;
-      border-radius: 8px;
+      border-radius: 50%;
       padding: 10px;
       color: #6c3c14;
+      font-size: 18px;
       cursor: pointer;
       z-index: 1000;
       transition: background-color 0.3s;
     }
-
     .mute-button:hover {
       background-color: #e0e0d6; 
     }
+    .d-flex img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
   </style>
 </head>
-<body class="d-flex flex-column vh-100">
 
-  <nav class="navbar navbar-expand-sm" aria-label="Third navbar example">
+<body class="d-flex flex-column vh-100">
+  <nav class="navbar navbar-expand-sm" aria-label="Riddle Navbar">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Where's Blue Ivy?</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
-      <div class="collapse navbar-collapse" id="navbarsExample03">
+      <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto mb-2 mb-sm-0">
           <li class="nav-item">
             <a class="nav-link" href="create-game">Create</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link nav-link-join active" aria-current="page" href="join-game">Join</a>
+            <a class="nav-link active" aria-current="page" href="join-game">Join</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-
-
   <main class="flex-grow-1 container">
     <div class="row vh-100">
       <div class="col-sm d-flex flex-column p-3 gap-3">
-      
         <div class="d-flex justify-content-between">
           <p>{{obj+1}}/3</p>
           <p><a href="/leaderboard/{{hunt_id}}">Leaderboard</a></p>
         </div>
-     
         <div class="riddle-container">
           <h2 class="text-center">Riddle #{{obj+1}}</h2>
           <p class="fst-italic">{{riddle}}</p>
         </div>
-
-   
         <div>
           <form action="/submit-item" method="POST">
             <div class="form-group">
-              <h1></h1>
-              <input name="code" type="number" class="form-control w-100" id="game-code-input" aria-describedby="item-code" placeholder="Enter Item Code">
-              <input value="{{player_id}}" style="display:none" name="player-id">
-              <input value="{{hunt_id}}" style="display:none" name="hunt-id">
+              <input name="code" type="number" class="form-control w-100" id="game-code-input" placeholder="Enter Item Code">
+              <input value="{{player_id}}" type="hidden" name="player-id">
+              <input value="{{hunt_id}}" type="hidden" name="hunt-id">
               <button type="submit" class="btn btn-primary mt-3 w-100">Enter</button>
             </div>
           </form> 
         </div>
         <div class="d-flex justify-content-center align-items-center">
-          <img src="../static/mnnit-logo.png" width="300rem" />
+          <img src="../static/mnnit-logo.png" width="300" alt="MNNIT Logo"/>
         </div>
       </div>
-  
-      <iframe class="col-sm h-100" src="https://app.mappedin.com/map/6724893a6bf1b9000b564186?location=s_96ea1c2b855bac8c"></iframe>
+      <iframe class="col-sm h-100" src="https://app.mappedin.com/map/6724893a6bf1b9000b564186?location=s_96ea1c2b855bac8c" frameborder="0"></iframe>
     </div>
   </main>
-
-
   <audio id="background-audio" loop>
     <source src="../static/Level Music (2).mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
   <button id="mute-button" class="mute-button">🔈</button>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script>
-   
     const audio = document.getElementById("background-audio");
     const muteButton = document.getElementById("mute-button");
-
     audio.playbackRate = 0.5;
-
-    
     audio.play();
-
     muteButton.addEventListener("click", () => {
       if (audio.paused) {
         audio.play();
