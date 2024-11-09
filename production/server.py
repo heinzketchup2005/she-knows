@@ -4,6 +4,15 @@ from flask import session
 from pymongo import MongoClient
 import random
 import time
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config(
+  cloud_name='dllxtk7bh',
+  api_key='926655157663358',
+  api_secret='c61rGibQT-DCp-RhjFBjYpy4NWI'
+)
 
 client = MongoClient("mongodb+srv://scavenger_user:hunter12345@cluster0.kx3cu.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 db = client["scavenger_hunt"]
@@ -117,6 +126,7 @@ def submit_item():
     player_id = int(request.form["player-id"])
     hunt_id = int(request.form["hunt-id"])
     code = str(request.form["code"])
+    image = request.files.get("image")
 
     player = players_collection.find_one({"_id": player_id})
     hunt = hunts_collection.find_one({"_id": hunt_id})
@@ -131,12 +141,27 @@ def submit_item():
         return render_template("error.html", error="You have already finished the hunt!")
 
     if code == correct_code:
+        if not image:
+            return render_template("error.html", error="Please upload an image.")
+        
+        upload_result = cloudinary.uploader.upload(image)
+        image_url = upload_result.get("url")
+
+        if 'image_urls' not in player:
+            player['image_urls'] = []
+        
+        player['image_urls'].append(image_url)
+
         players_collection.update_one(
             {"_id": player_id},
-            {"$inc": {"current_object": 1}, "$set": {"current_time": time.time()}}
+            {
+                "$inc": {"current_object": 1},
+                "$set": {"current_time": time.time()},
+                "$push": {"image_urls": image_url} 
+            }
         )
-        player = players_collection.find_one({"_id": player_id}) 
 
+        player = players_collection.find_one({"_id": player_id})
         if player['current_object'] < len(hunt['objects']):
             return redirect(url_for("current_riddle", player_id=player_id, hunt_id=hunt_id))
         else:
@@ -147,6 +172,8 @@ def submit_item():
             return redirect(url_for("finish_game", player_id=player_id, hunt_id=hunt_id))
     else:
         return render_template("error.html", error="Incorrect code.")
+
+
 
 @app.route("/finish/<int:player_id>/<int:hunt_id>", methods=["GET"])
 def finish_game(player_id, hunt_id):
