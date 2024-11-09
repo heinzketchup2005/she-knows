@@ -42,9 +42,9 @@ def start_hunt():
     riddle1 = request.form['riddle1']
     riddle2 = request.form['riddle2']
     riddle3 = request.form['riddle3']
-    room1 = request.form['room1']
-    room2 = request.form['room2']
-    room3 = request.form['room3']
+    hint1 = request.form['hint1']
+    hint2 = request.form['hint2']
+    hint3 = request.form['hint3']
     code1 = request.form['code1']
     code2 = request.form['code2']
     code3 = request.form['code3']
@@ -55,15 +55,16 @@ def start_hunt():
         'hunt_name': hunt_name,
         'organizer': organizer,
         'objects': [
-            {"riddle": riddle1, "room": room1, "code": code1},
-            {"riddle": riddle2, "room": room2, "code": code2},
-            {"riddle": riddle3, "room": room3, "code": code3}
+            {"riddle": riddle1, "hint": hint1, "code": code1},
+            {"riddle": riddle2, "hint": hint2, "code": code2},
+            {"riddle": riddle3, "hint": hint3, "code": code3}
         ],
         'players': []
     }
     hunts_collection.insert_one(hunt_data)
 
     return render_template("hunt-reveal.html", hunt_name=hunt_name, hunt_id=hunt_id)
+
 @app.route("/join-hunt", methods=["POST"])
 def join_hunt():
     hunt_id = int(request.form["idd"])
@@ -113,8 +114,8 @@ def current_riddle(player_id, hunt_id):
         current_object = player['current_object']
         if current_object < len(hunt['objects']):
             next_hint = hunt['objects'][current_object]['riddle']
-            next_room = hunt['objects'][current_object]['room']
-            return render_template("player-dashboard.html", riddle=next_hint, room=next_room, obj=current_object, player_id=player_id, hunt_id=hunt_id)
+            hint_text = hunt['objects'][current_object]['hint']
+            return render_template("player-dashboard.html", riddle=next_hint, hint=hint_text, obj=current_object, player_id=player_id, hunt_id=hunt_id)
         else:
             return redirect(url_for("finish_game", player_id=player_id, hunt_id=hunt_id))
     else:
