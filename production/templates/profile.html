@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome, {{ user.get('name', 'User') }}!</h1>
+    <img src="{{ user.get('picture', '') }}" alt="Profile Picture" width="100" height="100">
+    <p>Email: {{ user.get('email', 'N/A') }}</p>
+    <p>Username: {{ user.get('username', 'N/A') }}</p>
+
+    <!-- Use the passed some_hunt_id value -->
+    <a href="{{ url_for('leaderboard', hunt_id=some_hunt_id) }}">View Leaderboard</a>
+
+    <a href="{{ url_for('home') }}">Return Home</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>

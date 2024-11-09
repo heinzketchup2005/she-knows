@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect, session, url_for
 from pymongo import MongoClient
 import random
@@ -6,44 +5,37 @@ import time
 import secrets
 from authlib.integrations.flask_client import OAuth
 
-
-
-
+# Database setup
 client = MongoClient("mongodb+srv://scavenger_user:hunter123456@cluster01.ct2bj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01")
 db = client["scavenger_hunt"]
 hunts_collection = db["hunts"]
 players_collection = db["players"]
 
 app = Flask(__name__)
-  # Make sure to use a secure key for production
 app.secret_key = secrets.token_hex(16)  # Generates a random 32-character secret key
 
 # Initialize OAuth
 oauth = OAuth(app)
 
-# Google OAuth configuration (hardcoded credentials)
+# Google OAuth configuration with server_metadata_url
 google = oauth.register(
     name='google',
-    client_id='738965192863-5q8frhuc5umhp0ek00p3ih9j2dp6rb4m.apps.googleusercontent.com',  
-    client_secret='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',  
-    access_token_url='https://accounts.google.com/o/oauth2/token',
-    authorize_url='https://accounts.google.com/o/oauth2/auth',
-    authorize_params=None,
-   redirect_uri = 'http://127.0.0.1:5000/google/callback',
+    client_id='738965192863-5q8frhuc5umhp0ek00p3ih9j2dp6rb4m.apps.googleusercontent.com',
+    client_secret='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',
+    server_metadata_url='https://accounts.google.com/.well-known/openid-configuration',
     client_kwargs={'scope': 'openid profile email'}
 )
+
 # GitHub OAuth configuration
 github = oauth.register(
     name='github',
-    client_id='738965192863-5q8frhuc5umhp0ek00p3ih9j2dp6rb4m.apps.googleusercontent.com',
-    client_secret='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',
+    client_id='your_github_client_id',
+    client_secret='your_github_client_secret',
     access_token_url='https://github.com/login/oauth/access_token',
     authorize_url='https://github.com/login/oauth/authorize',
     redirect_uri='http://127.0.0.1:5000/github/callback',
     client_kwargs={'scope': 'read:user user:email'}
 )
-
-
 
 @app.route("/")
 def home():
@@ -56,7 +48,6 @@ def create_game():
 @app.route("/join-game", methods=["GET"])
 def join_game():
     return render_template("join-game.html")
-
 
 @app.route("/start-hunt", methods=['POST'])
 def start_hunt():
@@ -111,6 +102,10 @@ def join_hunt():
             {"_id": hunt_id},
             {"$push": {"players": player_id}}
         )
+
+        # Save the hunt_id in the session after the player joins
+        session['hunt_id'] = hunt_id  # Save the hunt ID for the profile page
+
         return render_template("save-local.html", player_id=player_id, hunt_id=hunt_id)
     else:
         return render_template("error.html", error="This hunt does not exist.")
@@ -211,16 +206,18 @@ def leaderboard(hunt_id):
        
 @app.route('/login/google')
 def login_google():
+    nonce = secrets.token_hex(16)  # Generate a unique nonce
+    session['nonce'] = nonce       # Store nonce in session for later validation
     redirect_uri = url_for('google_callback', _external=True)
-    return google.authorize_redirect(redirect_uri)
+    return google.authorize_redirect(redirect_uri, nonce=nonce)
 
 @app.route('/google/callback')
 def google_callback():
     token = google.authorize_access_token()
-    user_info = google.parse_id_token(token)
+    nonce = session.pop('nonce', None)  # Retrieve and remove nonce from session
+    user_info = google.parse_id_token(token, nonce=nonce)  # Pass nonce to parse_id_token
     session['user'] = user_info  # Store user info in session
     return redirect(url_for('profile'))
-
 
 @app.route('/login/github')
 def login_github():
@@ -233,13 +230,20 @@ def github_callback():
     user_info = github.get('user').json()
     session['user'] = user_info  # Store user info in session
     return redirect(url_for('profile'))
+
 @app.route('/profile')
 def profile():
     user = session.get('user')
     if user:
-        return render_template('profile.html', user=user)
-    return redirect(url_for('home'))    
-
+        # Fetch hunt_id if stored in user data or session
+        hunt_id = session.get('hunt_id', 8780)  # Default to 8780 if not in session
+ # Example if stored in session
+        return render_template('profile.html', user=user, some_hunt_id=hunt_id)
+    return redirect(url_for('home'))
+@app.route('/logout')
+def logout():
+    session.clear()  # Clears all session data
+    return redirect(url_for('home'))
 
 
 if __name__ == '__main__':
