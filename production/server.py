@@ -1,7 +1,9 @@
-from flask import Flask, render_template, request, redirect
+
+from flask import Flask, render_template, request, redirect, session, url_for
 from pymongo import MongoClient
 import random
 import time
+from authlib.integrations.flask_client import OAuth
 
 client = MongoClient("mongodb+srv://scavenger_user:hunter123456@cluster01.ct2bj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster01")
 db = client["scavenger_hunt"]
@@ -9,6 +11,22 @@ hunts_collection = db["hunts"]
 players_collection = db["players"]
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Make sure to use a secure key for production
+
+# Initialize OAuth
+oauth = OAuth(app)
+
+# Google OAuth configuration (hardcoded credentials)
+google = oauth.register(
+    name='google',
+    client_id='738965192863-5q8frhuc5umhp0ek00p3ih9j2dp6rb4m.apps.googleusercontent.com',  # Replace with your actual Google client ID
+    client_secret='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',  # Replace with your actual Google client secret
+    access_token_url='https://accounts.google.com/o/oauth2/token',
+    authorize_url='https://accounts.google.com/o/oauth2/auth',
+    authorize_params=None,
+    redirect_uri='http://localhost:5000/google/callback',
+    client_kwargs={'scope': 'openid profile email'}
+)
 
 @app.route("/")
 def home():
@@ -173,6 +191,25 @@ def leaderboard(hunt_id):
         return render_template("leaderboard.html", names=names, scores=scores)
     else:
         return render_template("error.html", error="Hunt not found.")
+       
+@app.route('/login/google')
+def login_google():
+    redirect_uri = url_for('google_callback', _external=True)
+    return google.authorize_redirect(redirect_uri)
+
+@app.route('/google/callback')
+def google_callback():
+    token = google.authorize_access_token()
+    user_info = google.parse_id_token(token)
+    session['user'] = user_info  # Store user info in session
+    return redirect(url_for('profile'))
+
+@app.route('/profile')
+def profile():
+    user = session.get('user')
+    if user:
+        return render_template('profile.html', user=user)
+    return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)
