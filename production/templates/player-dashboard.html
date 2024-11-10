@@ -138,15 +138,15 @@
 
    
         <div>
-          <form action="/submit-item" method="POST">
+          <form action="/submit-item" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-              <h1></h1>
-              <input name="code" type="number" class="form-control w-100" id="game-code-input" aria-describedby="item-code" placeholder="Enter Item Code">
-              <input value="{{player_id}}" style="display:none" name="player-id">
-              <input value="{{hunt_id}}" style="display:none" name="hunt-id">
+              <input name="code" type="number" class="form-control w-100" id="game-code-input" placeholder="Enter Item Code">
+              <input type="file" name="image" class="form-control mt-3" required>
+              <input value="{{player_id}}" type="hidden" name="player-id">
+              <input value="{{hunt_id}}" type="hidden" name="hunt-id">
               <button type="submit" class="btn btn-primary mt-3 w-100">Enter</button>
             </div>
-          </form> 
+          </form>
         </div>
         <div class="d-flex justify-content-center align-items-center">
           <img src="../static/mnnit-logo.png" width="300rem" />
