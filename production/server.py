@@ -7,6 +7,15 @@ from authlib.integrations.flask_client import OAuth
 from functools import wraps
 from bson import ObjectId
 from datetime import datetime
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config(
+  cloud_name='dllxtk7bh',
+  api_key='926655157663358',
+  api_secret='c61rGibQT-DCp-RhjFBjYpy4NWI'
+)
 
 
 # Database setup
@@ -316,6 +325,7 @@ def submit_item():
     player_id = int(request.form["player-id"])
     hunt_id = int(request.form["hunt-id"])
     code = str(request.form["code"])
+    image = request.files.get("image")
 
     player = players_collection.find_one({"_id": player_id})
     hunt = hunts_collection.find_one({"_id": hunt_id})
@@ -330,22 +340,47 @@ def submit_item():
         return render_template("error.html", error="You have already finished the hunt!")
 
     if code == correct_code:
-        players_collection.update_one(
-            {"_id": player_id},
-            {"$inc": {"current_object": 1}, "$set": {"current_time": time.time()}}
-        )
+        # Handle image upload if image is provided
+        if image:
+            upload_result = cloudinary.uploader.upload(image)
+            image_url = upload_result.get("url")
+
+            if 'image_urls' not in player:
+                player['image_urls'] = []
+
+            player['image_urls'].append(image_url)
+
+            players_collection.update_one(
+                {"_id": player_id},
+                {
+                    "$inc": {"current_object": 1},
+                    "$set": {"current_time": time.time()},
+                    "$push": {"image_urls": image_url}
+                }
+            )
+        else:
+            # Handle the case when no image is uploaded
+            players_collection.update_one(
+                {"_id": player_id},
+                {
+                    "$inc": {"current_object": 1},
+                    "$set": {"current_time": time.time()}
+                }
+            )
+
         player = players_collection.find_one({"_id": player_id})  # Re-fetch updated player data
 
         if player['current_object'] < len(hunt['objects']):
-            return redirect(f"/current-riddle/{player_id}/{hunt_id}")
+            return redirect(url_for("current_riddle", player_id=player_id, hunt_id=hunt_id))
         else:
             players_collection.update_one(
                 {"_id": player_id},
                 {"$set": {"finished": True}}
             )
-            return redirect(f"/finish/{player_id}/{hunt_id}")
+            return redirect(url_for("finish_game", player_id=player_id, hunt_id=hunt_id))
     else:
         return render_template("error.html", error="Incorrect code.")
+
 
 @app.route("/finish/<player>/<hunt>", methods=["GET"])
 def finish_game(player, hunt):
