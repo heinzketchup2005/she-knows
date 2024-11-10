@@ -13,55 +13,16 @@ Features
 Technologies Used
 Frontend:
 1)HTML, CSS, and JavaScript: Such technologies form the core of developing the structure, styling, and behavior of the website.
-2)React: This makes the user interface responsive and interactive so that at the end, a seamless user experience occurs.
 
 Backend:
 1)Flask: This is a lightweight Python framework for the processing of backend activities and API interactions.
-2)GROQ: It deals with complex queries management and handling logic in the backend. For the games, such processing and operations have been integrated.
-3)Mappedin: This technology integrates the rendering of maps and navigation. Through it, the players are allowed to explore real-world as well as virtual spaces.
-4)MongoDB: A database that stores data for users, state of games, hints, and clues.
+2)Mappedin: This technology integrates the rendering of maps and navigation. Through it, the players are allowed to explore real-world as well as virtual spaces.
+3)MongoDB: A database that stores data for users, state of games, hints, and clues.
 
 Getting Started:
 Prerequisites
-Node.js and npm for frontend development.
 Python 3.x and Flask for backend development.
 MongoDB instance for data management.
-
-Installation
-1)Clone the Repository:
-
-![image](https://github.com/user-attachments/assets/68b04bc0-f331-4efb-bd25-ba0adb037520)
-
-2)Install Frontend Dependencies:
-
-![image](https://github.com/user-attachments/assets/f52ada4c-4ac6-4d51-92cc-b76afa7081db)
-
-3)Install Backend Dependencies:
-
-![image](https://github.com/user-attachments/assets/d0182970-e423-4458-a676-2d9ccc759e99)
-
-4)Environment Variables: Configure environment variables for MongoDB, JWT secrets, and API keys.
-
-5)Run Application:
-Frontend: npm start
-Backend: python app.py
-
-Database Schema
-Collections
-Users: Stores participant data, including passwords and tokens.
-Scanned: Logs each scan’s timestamp for tracking and preventing cheating.
-
-users Collection
-
-![image](https://github.com/user-attachments/assets/de91cf38-7d5c-404f-a5f2-15fb4ff89f17)
-
-scanned Collection
-
-![image](https://github.com/user-attachments/assets/713396a4-307a-4fac-a96d-78a512251712)
-
-JWT Token Payload
-
-![image](https://github.com/user-attachments/assets/3a1c4e90-b6dc-4038-b597-7f0ea3051496)
 
 Screenshots
 Main Page
