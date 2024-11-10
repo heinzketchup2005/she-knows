@@ -2,19 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f0e1;
+            color: #3b2b13;
+            font-family: 'Georgia', serif;
+            padding: 20px;
+        }
+        .profile-container {
+            background-color: #fef5e7;
+            border: 2px solid #6c3c14;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .profile-image {
+            border-radius: 50%;
+            border: 3px solid #6c3c14;
+        }
+        .btn-primary {
+            background-color: #6c3c14;
+            border: none;
+            margin: 5px;
+        }
+        .btn-primary:hover {
+            background-color: #5a3310;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome, {{ user.get('name', 'User') }}!</h1>
-    <img src="{{ user.get('picture', '') }}" alt="Profile Picture" width="100" height="100">
-    <p>Email: {{ user.get('email', 'N/A') }}</p>
-    <p>Username: {{ user.get('username', 'N/A') }}</p>
+    <div class="profile-container">
+        <div class="text-center mb-4">
+            <img src="{{ user.get('picture', '/static/default-avatar.png') }}" 
+                 alt="Profile Picture" 
+                 class="profile-image mb-3"
+                 width="100" 
+                 height="100">
+            <h1>Welcome, {{ user.get('name', 'User') }}!</h1>
+        </div>
 
-    <!-- Use the passed some_hunt_id value -->
-    <a href="{{ url_for('leaderboard', hunt_id=some_hunt_id) }}">View Leaderboard</a>
+        <div class="mb-4">
+            <p><strong>Email:</strong> {{ user.get('email', 'N/A') }}</p>
+            {% if hunt_id %}
+                <p><strong>Current Hunt ID:</strong> {{ hunt_id }}</p>
+                {% if player_id %}
+                    <p><strong>Player ID:</strong> {{ player_id }}</p>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('current_riddle_get', player_id=player_id, hunt_id=hunt_id) }}" 
+                           class="btn btn-primary">
+                            Return to Game
+                        </a>
+                        {% if hunt_id %}
+                            <a href="{{ url_for('leaderboard', hunt_id=hunt_id) }}" 
+                               class="btn btn-primary">
+                                View Leaderboard
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% else %}
+                <p>You are not currently in a hunt.</p>
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('join_game') }}" class="btn btn-primary">Join a Hunt</a>
+                    <a href="{{ url_for('create_game') }}" class="btn btn-primary">Create a Hunt</a>
+                </div>
+            {% endif %}
+        </div>
 
-    <a href="{{ url_for('home') }}">Return Home</a>
-    <a href="{{ url_for('logout') }}">Logout</a>
+        <div class="d-grid gap-2">
+            <a href="{{ url_for('home') }}" class="btn btn-primary">Return Home</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-primary">Logout</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

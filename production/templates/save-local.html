@@ -1,114 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Details - Hunt Join</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: 'Georgia', serif; 
-            background: url('../static/Treasuremap.jpeg') no-repeat center center fixed; 
-            background-size: cover; 
-            margin: 0;
-            padding: 0;
+            background-color: #f8f9fa;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             height: 100vh;
-            color: #3b2b13; 
+            margin: 0;
         }
+
         .container {
-            background-color: rgba(255, 255, 255, 0.9); 
+            background-color: white;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 350px;
+            max-width: 400px;
         }
+
         h1 {
-            color: #6c3c14; 
-            font-size: 26px;
-            margin-bottom: 15px;
+            font-size: 2rem;
+            color: #343a40;
+            font-weight: 700;
+            margin-bottom: 10px;
         }
+
         p {
-            font-size: 16px;
+            font-size: 1rem;
+            color: #6c757d;
             margin-bottom: 20px;
         }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        label {
-            font-size: 14px;
-            margin: 5px 0;
-            color: #333;
-        }
-        input[type="text"] {
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 2px solid #6c3c14; 
-            border-radius: 5px;
-            width: 100%;
-            font-size: 14px;
-        }
-        button {
-            padding: 12px 24px;
-            background-color: #6c3c14; 
+
+        .btn-custom {
+            background-color: #007bff;
             color: white;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
             transition: background-color 0.3s ease;
         }
-        button:hover {
-            background-color: #5a3310; 
-        }
-      
-    .mute-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #f5f5dc;
-      border: 2px solid #6c3c14;
-      border-radius: 8px;
-      padding: 10px;
-      color: #6c3c14;
-      cursor: pointer;
-      z-index: 1000;
-      transition: background-color 0.3s;
-    }
 
-    .mute-button:hover {
-      background-color: #e0e0d6; 
-    }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Welcome!</h1>
         <p>Do not share your player ID with anyone.</p>
+        
+        <!-- Hidden elements for player ID and hunt ID -->
         <p style="display: none" id="playerP">{{player_id}}</p>
         <p style="display: none" id="huntP">{{hunt_id}}</p>
 
-        <form action="/current-riddle" method="POST">
-            <label style="display: none" for="player-id">Player ID:</label>
+        <!-- Form for starting the hunt -->
+        <form id="riddleForm" onsubmit="submitForm(event)">
             <input style="display: none" type="text" id="player-id" name="player_id">
-            <label style="display: none" for="hunt-id">Hunt ID:</label>
             <input style="display: none" type="text" id="hunt-id" name="hunt_id">
-            <button type="submit">Submit to Current Riddle</button>
+            <button type="submit" class="btn btn-custom">Start Your Hunt!</button>
         </form>
     </div>
     
-  <audio id="background-audio" loop>
-    <source src="../static/Level Music (2).mp3" type="audio/mp3">
-    Your browser does not support the audio element.
-  </audio>
-  <button id="mute-button" class="mute-button">🔈</button>
-
-
     <script>
         const playerp = document.getElementById("playerP").innerHTML;
         localStorage.setItem("player-id", playerp);
@@ -125,28 +84,13 @@
                 document.getElementById("hunt-id").value = huntIdFromStorage;
             }
         }
+
+        function submitForm(event) {
+            event.preventDefault();
+            const playerId = document.getElementById("player-id").value;
+            const huntId = document.getElementById("hunt-id").value;
+            window.location.href = `/current-riddle/${playerId}/${huntId}`;
+        }
     </script>
-      <script>
-        
-        const audio = document.getElementById("background-audio");
-        const muteButton = document.getElementById("mute-button");
-    
-  
-        audio.playbackRate = 0.5;
-    
- 
-        audio.play();
-    
-        muteButton.addEventListener("click", () => {
-          if (audio.paused) {
-            audio.play();
-            muteButton.textContent = "🔈"; 
-          } else {
-            audio.pause();
-            muteButton.textContent = "🔇"; 
-          }
-        });
-      </script>
-    
 </body>
 </html>
