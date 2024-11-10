@@ -17,3 +17,4 @@ Flask: A lightweight Python framework for backend processing.
 GROQ: For handling complex queries and logic on the backend.
 Mappedin: For map rendering and user navigation.
 MongoDB: Database management for user data and game state.
+![image](https://github.com/user-attachments/assets/1d08d028-e085-4af3-9b38-e92906fabb8c) how to upload image instead of this link in github
